@@ -12,6 +12,7 @@ public interface IPostRepository
     // Task<bool> UpdatePost(Post item);
     Task<bool> DeletePost(long PostId);
     Task<List<Post>> GetUserPostById(long UserId);
+    
     Task<List<Post>> GetHashTagPostById(long HashTagId);
 
 
@@ -85,6 +86,7 @@ public class PostRepository :BaseRepository, IPostRepository
             return await con.QuerySingleOrDefaultAsync<Post>(query, new { PostId });
             
     }
+
 
     public async Task<List<Post>> GetUserPostById(long UserId)
     {

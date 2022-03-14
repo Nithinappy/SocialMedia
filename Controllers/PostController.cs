@@ -14,20 +14,20 @@ public class PostController : ControllerBase
     private readonly IPostRepository _post;
     private readonly ILikeRepository _like;
     private readonly IHashTagRepository _hashtag;
-    public PostController(ILogger<UserController> logger,IPostRepository post, IUserRepository user,ILikeRepository like,IHashTagRepository hashtag)
+    public PostController(ILogger<UserController> logger, IPostRepository post, IUserRepository user, ILikeRepository like, IHashTagRepository hashtag)
     {
         _logger = logger;
         _post = post;
         _user = user;
-        _like =like;
-        _hashtag=hashtag;
+        _like = like;
+        _hashtag = hashtag;
     }
-[HttpGet]
+    [HttpGet]
     public async Task<ActionResult<List<PostDTO>>> GetAllPosts()
     {
         var postsList = await _post.GetAllPosts();
 
-       var dtoList = postsList.Select(x=>x.asDto);
+        var dtoList = postsList.Select(x => x.asDto);
 
         return Ok(dtoList);
     }
@@ -42,10 +42,11 @@ public class PostController : ControllerBase
             return NotFound("No User found with given User Id");
 
         PostDTO = post.asDto;
-        PostDTO.PostLikes=  (await _like.GetLikesById(post_id)).Select(x=>x.asDto).ToList();
-        
-        PostDTO.HashTags=  (await _hashtag.GetPostHashTagById(post_id)).Select(x=>x.asDto).ToList();
-        
+
+        PostDTO.PostCreatedBy  = (await _user.GetPostCreatedBy(post_id)).Select(x => x.asDto).ToList();
+        PostDTO.PostLikes = (await _like.GetLikesById(post_id)).Select(x => x.asDto).ToList();
+        PostDTO.HashTags = (await _hashtag.GetPostHashTagById(post_id)).Select(x => x.asDto).ToList();
+
         return Ok(PostDTO);
     }
 
@@ -56,8 +57,8 @@ public class PostController : ControllerBase
 
         var toCreatePost = new Post
         {
-           PostType = Data.PostType.Trim(),
-           UserId = Data.UserId
+            PostType = Data.PostType.Trim(),
+            UserId = Data.UserId
         };
 
         var createdPost = await _post.CreatePost(toCreatePost);
@@ -79,5 +80,5 @@ public class PostController : ControllerBase
     }
 
 
-    
+
 }

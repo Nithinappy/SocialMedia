@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using SocialMedia.Models;
 
 namespace SocialMedia.DTOs;
 
@@ -17,6 +18,9 @@ public record PostDTO
     [JsonPropertyName("created_at")]
 
     public DateTimeOffset CreatedAt { get; set; }
+    [JsonPropertyName("posts_CreatedBy")]
+
+    public List<UserDTO> PostCreatedBy { get; set; }
     [JsonPropertyName("my_post_likes")]
 
     public List<LikeDTO> PostLikes { get; set; }

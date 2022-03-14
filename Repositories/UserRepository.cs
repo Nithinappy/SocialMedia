@@ -11,10 +11,12 @@ public interface IUserRepository
     Task<User> CreateUser(User item);
     Task<bool> UpdateUser(User item);
     Task<User> DeleteUser(long UserId);
+    Task<List<User>> GetPostCreatedBy(long PostId);
+
 
 }
 
-public class UserRepository :BaseRepository, IUserRepository
+public class UserRepository : BaseRepository, IUserRepository
 {
 
     public UserRepository(IConfiguration config) : base(config)
@@ -23,7 +25,7 @@ public class UserRepository :BaseRepository, IUserRepository
     }
     public async Task<User> CreateUser(User item)
     {
-       var query = $@"INSERT INTO ""{TableNames.users}"" 
+        var query = $@"INSERT INTO ""{TableNames.users}"" 
         (first_name,last_name,user_name,email,mobile,bio,address,passcode) 
         VALUES (@FirstName, @LastName, @UserName ,@Email, @Mobile,@Bio, @Address, @Passcode) 
         RETURNING *";
@@ -35,14 +37,14 @@ public class UserRepository :BaseRepository, IUserRepository
         }
     }
 
-    public  Task<User> DeleteUser(long UserId)
+    public Task<User> DeleteUser(long UserId)
     {
         throw new NotImplementedException();
     }
 
     public async Task<List<User>> GetAllUsers()
     {
-     
+
         // Query
         var query = $@"SELECT * FROM ""{TableNames.users}""";
 
@@ -63,20 +65,33 @@ public class UserRepository :BaseRepository, IUserRepository
 
         using (var con = NewConnection)
             return await con.QuerySingleOrDefaultAsync<User>(query, new { UserId });
-            
+
     }
 
     public async Task<bool> UpdateUser(User item)
     {
-          var query = $@"UPDATE ""{TableNames.users}"" SET user_name = @UserName, 
+        var query = $@"UPDATE ""{TableNames.users}"" SET user_name = @UserName, 
         email = @Email,bio = @Bio,address = @Address WHERE user_id = @UserId";
 
         using (var con = NewConnection)
         {
             var rowCount = await con.ExecuteAsync(query, item);
             return rowCount == 1;
+        }
+
+
     }
 
-   
-}
+
+    public async Task<List<User>> GetPostCreatedBy(long PostId)
+    {
+        var query = $@"SELECT u.* FROM {TableNames.posts}  p LEFT JOIN {TableNames.users} u 
+			  on p.user_id = u.user_id  WHERE post_id= @PostId";
+        List<User> res;
+        using (var con = NewConnection) // Open connection
+            res = (await con.QueryAsync<User>(query, new { PostId })).AsList(); // Execute the query
+
+        return res; ;
+
+    }
 }

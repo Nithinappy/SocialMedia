@@ -79,9 +79,7 @@ public class UserController : ControllerBase
 
         var toUpdateUser = existing with
         {
-            // FirstName = Data.FirstName?.Trim() ?? existing.LastName,
-            // LastName = Data.LastName?.Trim() ?? existing.LastName,
-            // Mobile = Data.Mobile ?? existing.Mobile,
+          
             UserName = Data.UserName ?? existing.UserName,
             Address = Data.Address ?? existing.Address,
             Bio = Data.Bio ?? existing.Bio,
