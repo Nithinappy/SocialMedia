@@ -13,12 +13,12 @@ public class UserController : ControllerBase
     private readonly IUserRepository _user;
     private readonly IPostRepository _post;
     private readonly ILikeRepository _like;
-    public UserController(ILogger<UserController> logger, IUserRepository user,IPostRepository post,ILikeRepository like)
+    public UserController(ILogger<UserController> logger, IUserRepository user, IPostRepository post, ILikeRepository like)
     {
         _logger = logger;
         _user = user;
         _post = post;
-        _like=like;
+        _like = like;
     }
     [HttpGet]
     public async Task<ActionResult<List<UserDTO>>> GetAllUsers()
@@ -42,7 +42,7 @@ public class UserController : ControllerBase
         UserDTO = user.asDto;
         UserDTO.MyPosts = (await _post.GetUserPostById(User_id)).Select(x => x.asDto).ToList();
         UserDTO.MyLikes = (await _like.GetUserLikesById(User_id)).Select(x => x.asDto).ToList();
-      
+
         return Ok(UserDTO);
     }
 
@@ -79,7 +79,7 @@ public class UserController : ControllerBase
 
         var toUpdateUser = existing with
         {
-          
+
             UserName = Data.UserName ?? existing.UserName,
             Address = Data.Address ?? existing.Address,
             Bio = Data.Bio ?? existing.Bio,

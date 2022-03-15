@@ -39,7 +39,7 @@ public class PostController : ControllerBase
         var post = await _post.GetPostById(post_id);
 
         if (post is null)
-            return NotFound("No User found with given User Id");
+            return NotFound("No Post found with given Post Id");
 
         PostDTO = post.asDto;
 
@@ -72,7 +72,7 @@ public class PostController : ControllerBase
     {
         var existing = await _post.GetPostById(post_id);
         if (existing is null)
-            return NotFound("No post found with given Post Id");
+            return NotFound("No Post found with given Post Id");
 
         var didDelete = await _post.DeletePost(post_id);
 

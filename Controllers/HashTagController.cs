@@ -29,14 +29,14 @@ public class HashTagController : ControllerBase
 
         var toCreateHashTag = new HashTag
         {
-         HashName = Data.HashName.Trim()
+            HashName = Data.HashName.Trim()
         };
 
         var createdHashTag = await _hashtag.CreateHashTag(toCreateHashTag);
 
         return StatusCode(StatusCodes.Status201Created, createdHashTag.asDto);
     }
-[HttpGet("{hash_tag_id}")]
+    [HttpGet("{hash_tag_id}")]
     public async Task<ActionResult<HashTagDTO>> GetHashTagById([FromRoute] long hash_tag_id)
     {
         HashTagDTO HashTagDTO = new HashTagDTO();
@@ -46,8 +46,8 @@ public class HashTagController : ControllerBase
             return NotFound("No HashTag found with given HashTag Id");
 
         HashTagDTO = hashtag.asDto;
-        HashTagDTO.Posts = (await  _post.GetHashTagPostById(hash_tag_id)).Select(x =>x.asDto).ToList();
-        
+        HashTagDTO.Posts = (await _post.GetHashTagPostById(hash_tag_id)).Select(x => x.asDto).ToList();
+
         return Ok(HashTagDTO);
     }
 
