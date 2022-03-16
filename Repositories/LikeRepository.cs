@@ -41,7 +41,7 @@ public class LikeRepository :BaseRepository, ILikeRepository
     public async Task<bool> DeleteLike(long LikeId)
     {
         var query = $@"Delete  FROM ""{TableNames.likes}"" 
-        WHERE like_id=@LikeId";
+        WHERE like_id = @LikeId";
 
         using (var con = NewConnection)
         {
@@ -63,7 +63,7 @@ public class LikeRepository :BaseRepository, ILikeRepository
 
     public async Task<List<Like>> GetLikesById(long PostId)
     {
-          var query = $@"SELECT * FROM ""{TableNames.likes}"" WHERE post_id=@PostId";
+          var query = $@"SELECT * FROM ""{TableNames.likes}"" WHERE post_id = @PostId";
 
         List<Like> res;
         using (var con = NewConnection) // Open connection
@@ -74,7 +74,7 @@ public class LikeRepository :BaseRepository, ILikeRepository
 
     public async Task<List<Like>> GetUserLikesById(long User_id)
     {
-       var query = $@"SELECT * FROM ""{TableNames.likes}"" WHERE user_id=@User_id";
+       var query = $@"SELECT * FROM ""{TableNames.likes}"" WHERE user_id = @User_id";
 
         List<Like> res;
         using (var con = NewConnection) // Open connection
